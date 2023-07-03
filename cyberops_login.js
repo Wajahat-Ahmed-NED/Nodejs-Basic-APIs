@@ -11,6 +11,13 @@ exports.cyberops_signIn = (req, res) => {
       username: "Admin",
       type: "SuperUser",
     });
+  } else if (email === "user" && password === "user@123") {
+    res.status(200).json({
+      message: "Success",
+      token: "body",
+      username: "User",
+      type: "user",
+    });
   } else {
     res.status(400).json({ message: "Invalid Credentials" });
   }

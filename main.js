@@ -10,7 +10,7 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const app = express();
 const axios = require("axios");
-const port = 3000;
+const port = 5000;
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 // app.use(sqlinjection);  // add sql-injection middleware here
 
@@ -66,13 +66,14 @@ app.post("/cyberops_signin", cyberops.cyberops_signIn);
 
 // app.post('/post', report.data)
 // app.post('/user', users.udata)
+// const gophishAPI='http://127.0.0.1:3333/'
 app.get("/getUsers", async (req, res) => {
   var config = {
     method: "get",
-    url: "https://78.128.8.141:3333/api/users/",
+    url: "https://127.0.0.1:3333/api/users/",
     headers: {
       Authorization:
-        "07eaf977985b3095ea41bf32fd41afce3b284c8d091ef36a46fa093e1cf25395",
+        "d05ce705ff99d7fefd1f5a28d094cc5ef0a9b7b528f4f32da43138a96e7ea523",
     },
   };
 
@@ -88,10 +89,10 @@ app.get("/getUsers", async (req, res) => {
 app.get("/getGroups", async (req, res) => {
   var config = {
     method: "get",
-    url: "https://78.128.8.141:3333/api/groups/",
+    url: "https://127.0.0.1:3333/api/groups/",
     headers: {
       Authorization:
-        "07eaf977985b3095ea41bf32fd41afce3b284c8d091ef36a46fa093e1cf25395",
+        "d05ce705ff99d7fefd1f5a28d094cc5ef0a9b7b528f4f32da43138a96e7ea523",
     },
   };
 
@@ -107,10 +108,10 @@ app.get("/getGroups", async (req, res) => {
 app.get("/getGroupsSummary", async (req, res) => {
   var config = {
     method: "get",
-    url: "https://78.128.8.141:3333/api/groups/summary",
+    url: "https://127.0.0.1:3333/api/groups/summary",
     headers: {
       Authorization:
-        "07eaf977985b3095ea41bf32fd41afce3b284c8d091ef36a46fa093e1cf25395",
+        "d05ce705ff99d7fefd1f5a28d094cc5ef0a9b7b528f4f32da43138a96e7ea523",
     },
   };
 
@@ -126,10 +127,10 @@ app.get("/getGroupsSummary", async (req, res) => {
 app.get("/getTemplates", async (req, res) => {
   var config = {
     method: "get",
-    url: "https://78.128.8.141:3333/api/templates",
+    url: "https://127.0.0.1:3333/api/templates",
     headers: {
       Authorization:
-        "07eaf977985b3095ea41bf32fd41afce3b284c8d091ef36a46fa093e1cf25395",
+        "d05ce705ff99d7fefd1f5a28d094cc5ef0a9b7b528f4f32da43138a96e7ea523",
     },
   };
 
@@ -145,10 +146,10 @@ app.get("/getTemplates", async (req, res) => {
 app.get("/getPages", async (req, res) => {
   var config = {
     method: "get",
-    url: "https://78.128.8.141:3333/api/pages/",
+    url: "https://127.0.0.1:3333/api/pages/",
     headers: {
       Authorization:
-        "07eaf977985b3095ea41bf32fd41afce3b284c8d091ef36a46fa093e1cf25395",
+        "d05ce705ff99d7fefd1f5a28d094cc5ef0a9b7b528f4f32da43138a96e7ea523",
     },
   };
 
@@ -164,10 +165,10 @@ app.get("/getPages", async (req, res) => {
 app.get("/getSendingProfile", async (req, res) => {
   var config = {
     method: "get",
-    url: "https://78.128.8.141:3333/api/smtp/",
+    url: "https://127.0.0.1:3333/api/smtp/",
     headers: {
       Authorization:
-        "07eaf977985b3095ea41bf32fd41afce3b284c8d091ef36a46fa093e1cf25395",
+        "d05ce705ff99d7fefd1f5a28d094cc5ef0a9b7b528f4f32da43138a96e7ea523",
     },
   };
 
@@ -183,10 +184,10 @@ app.get("/getSendingProfile", async (req, res) => {
 app.get("/getCompaigns", async (req, res) => {
   var config = {
     method: "get",
-    url: "https://78.128.8.141:3333/api/campaigns/",
+    url: "https://127.0.0.1:3333/api/campaigns/",
     headers: {
       Authorization:
-        "07eaf977985b3095ea41bf32fd41afce3b284c8d091ef36a46fa093e1cf25395",
+        "d05ce705ff99d7fefd1f5a28d094cc5ef0a9b7b528f4f32da43138a96e7ea523",
     },
   };
 
@@ -203,10 +204,10 @@ app.get("/getCompaignResult/:id", async (req, res) => {
   let id = req.params.id;
   var config = {
     method: "get",
-    url: `https://78.128.8.141:3333/api/campaigns/${id}/results`,
+    url: `https://127.0.0.1:3333/api/campaigns/${id}/results`,
     headers: {
       Authorization:
-        "07eaf977985b3095ea41bf32fd41afce3b284c8d091ef36a46fa093e1cf25395",
+        "d05ce705ff99d7fefd1f5a28d094cc5ef0a9b7b528f4f32da43138a96e7ea523",
     },
   };
 
@@ -224,10 +225,10 @@ app.get("/getCompaignSummary/:id", async (req, res) => {
 
   var config = {
     method: "get",
-    url: `https://78.128.8.141:3333/api/campaigns/${id}/summary`,
+    url: `https://127.0.0.1:3333/api/campaigns/${id}/summary`,
     headers: {
       Authorization:
-        "07eaf977985b3095ea41bf32fd41afce3b284c8d091ef36a46fa093e1cf25395",
+        "d05ce705ff99d7fefd1f5a28d094cc5ef0a9b7b528f4f32da43138a96e7ea523",
     },
   };
 
@@ -245,10 +246,10 @@ app.get("/getCompleteCompaign/:id", async (req, res) => {
   console.log(id);
   var config = {
     method: "get",
-    url: `https://78.128.8.141:3333/api/campaigns/${id}/complete`,
+    url: `https://127.0.0.1:3333/api/campaigns/${id}/complete`,
     headers: {
       Authorization:
-        "07eaf977985b3095ea41bf32fd41afce3b284c8d091ef36a46fa093e1cf25395",
+        "d05ce705ff99d7fefd1f5a28d094cc5ef0a9b7b528f4f32da43138a96e7ea523",
     },
   };
 
@@ -273,10 +274,10 @@ app.post("/createUser", async (req, res) => {
 
   var config = {
     method: "post",
-    url: "https://78.128.8.141:3333/api/users/",
+    url: "https://127.0.0.1:3333/api/users/",
     headers: {
       Authorization:
-        "07eaf977985b3095ea41bf32fd41afce3b284c8d091ef36a46fa093e1cf25395",
+        "d05ce705ff99d7fefd1f5a28d094cc5ef0a9b7b528f4f32da43138a96e7ea523",
       "Content-Type": "application/json",
     },
     data: data,
@@ -301,10 +302,10 @@ app.post("/createGroup", async (req, res) => {
 
   var config = {
     method: "post",
-    url: "https://78.128.8.141:3333/api/groups/",
+    url: "https://127.0.0.1:3333/api/groups/",
     headers: {
       Authorization:
-        "07eaf977985b3095ea41bf32fd41afce3b284c8d091ef36a46fa093e1cf25395",
+        "d05ce705ff99d7fefd1f5a28d094cc5ef0a9b7b528f4f32da43138a96e7ea523",
       "Content-Type": "application/json",
     },
     data: data,
@@ -335,10 +336,10 @@ app.post("/createTemplate", async (req, res) => {
 
   var config = {
     method: "post",
-    url: "https://78.128.8.141:3333/api/templates/",
+    url: "https://127.0.0.1:3333/api/templates/",
     headers: {
       Authorization:
-        "07eaf977985b3095ea41bf32fd41afce3b284c8d091ef36a46fa093e1cf25395",
+        "d05ce705ff99d7fefd1f5a28d094cc5ef0a9b7b528f4f32da43138a96e7ea523",
       "Content-Type": "application/json",
     },
     data: data,
@@ -369,10 +370,10 @@ app.post("/createPage", async (req, res) => {
 
   var config = {
     method: "post",
-    url: "https://78.128.8.141:3333/api/pages/",
+    url: "https://127.0.0.1:3333/api/pages/",
     headers: {
       Authorization:
-        "07eaf977985b3095ea41bf32fd41afce3b284c8d091ef36a46fa093e1cf25395",
+        "d05ce705ff99d7fefd1f5a28d094cc5ef0a9b7b528f4f32da43138a96e7ea523",
       "Content-Type": "application/json",
     },
     data: data,
@@ -400,10 +401,10 @@ app.post("/importSite", async (req, res) => {
 
   var config = {
     method: "post",
-    url: "https://78.128.8.141:3333/api/import/site",
+    url: "https://127.0.0.1:3333/api/import/site",
     headers: {
       Authorization:
-        "07eaf977985b3095ea41bf32fd41afce3b284c8d091ef36a46fa093e1cf25395",
+        "d05ce705ff99d7fefd1f5a28d094cc5ef0a9b7b528f4f32da43138a96e7ea523",
       "Content-Type": "application/json",
     },
     data: data,
@@ -431,10 +432,10 @@ app.post("/importEmail", async (req, res) => {
 
   var config = {
     method: "post",
-    url: "https://78.128.8.141:3333/api/import/email",
+    url: "https://127.0.0.1:3333/api/import/email",
     headers: {
       Authorization:
-        "07eaf977985b3095ea41bf32fd41afce3b284c8d091ef36a46fa093e1cf25395",
+        "d05ce705ff99d7fefd1f5a28d094cc5ef0a9b7b528f4f32da43138a96e7ea523",
       "Content-Type": "application/json",
     },
     data: data,
@@ -459,10 +460,10 @@ app.post("/createCompaign", async (req, res) => {
 
   var config = {
     method: "post",
-    url: "https://78.128.8.141:3333/api/campaigns/",
+    url: "https://127.0.0.1:3333/api/campaigns/",
     headers: {
       Authorization:
-        "07eaf977985b3095ea41bf32fd41afce3b284c8d091ef36a46fa093e1cf25395",
+        "d05ce705ff99d7fefd1f5a28d094cc5ef0a9b7b528f4f32da43138a96e7ea523",
       "Content-Type": "application/json",
     },
     data: data,
@@ -496,10 +497,10 @@ app.post("/createSendingProfile", async (req, res) => {
 
   var config = {
     method: "post",
-    url: "https://78.128.8.141:3333/api/smtp/?api=07eaf977985b3095ea41bf32fd41afce3b284c8d091ef36a46fa093e1cf25395",
+    url: "https://127.0.0.1:3333/api/smtp/?api=d05ce705ff99d7fefd1f5a28d094cc5ef0a9b7b528f4f32da43138a96e7ea523",
     headers: {
       Authorization:
-        "07eaf977985b3095ea41bf32fd41afce3b284c8d091ef36a46fa093e1cf25395",
+        "d05ce705ff99d7fefd1f5a28d094cc5ef0a9b7b528f4f32da43138a96e7ea523",
       "Content-Type": "application/json",
     },
 
@@ -529,10 +530,10 @@ app.put("/editSendingProfile/:id", async (req, res) => {
   console.log(req.body.id);
   var config = {
     method: "put",
-    url: `https://78.128.8.141:3333/api/smtp/${req.body.id}`,
+    url: `https://127.0.0.1:3333/api/smtp/${req.body.id}`,
     headers: {
       Authorization:
-        "07eaf977985b3095ea41bf32fd41afce3b284c8d091ef36a46fa093e1cf25395",
+        "d05ce705ff99d7fefd1f5a28d094cc5ef0a9b7b528f4f32da43138a96e7ea523",
       "Content-Type": "application/json",
     },
     data: data,
@@ -561,10 +562,10 @@ app.put("/editUser/:id", async (req, res) => {
   console.log(req.body.id);
   var config = {
     method: "put",
-    url: `https://78.128.8.141:3333/api/users/${req.body.id}`,
+    url: `https://127.0.0.1:3333/api/users/${req.body.id}`,
     headers: {
       Authorization:
-        "07eaf977985b3095ea41bf32fd41afce3b284c8d091ef36a46fa093e1cf25395",
+        "d05ce705ff99d7fefd1f5a28d094cc5ef0a9b7b528f4f32da43138a96e7ea523",
       "Content-Type": "application/json",
     },
     data: data,
@@ -595,10 +596,10 @@ app.put("/editPage/:id", async (req, res) => {
   console.log(req.body.id);
   var config = {
     method: "put",
-    url: `https://78.128.8.141:3333/api/pages/${req.body.id}`,
+    url: `https://127.0.0.1:3333/api/pages/${req.body.id}`,
     headers: {
       Authorization:
-        "07eaf977985b3095ea41bf32fd41afce3b284c8d091ef36a46fa093e1cf25395",
+        "d05ce705ff99d7fefd1f5a28d094cc5ef0a9b7b528f4f32da43138a96e7ea523",
       "Content-Type": "application/json",
     },
     data: data,
@@ -629,10 +630,10 @@ app.put("/editGroup/:id", async (req, res) => {
   console.log(req.body.id);
   var config = {
     method: "put",
-    url: `https://78.128.8.141:3333/api/groups/${req.body.id}`,
+    url: `https://127.0.0.1:3333/api/groups/${req.body.id}`,
     headers: {
       Authorization:
-        "07eaf977985b3095ea41bf32fd41afce3b284c8d091ef36a46fa093e1cf25395",
+        "d05ce705ff99d7fefd1f5a28d094cc5ef0a9b7b528f4f32da43138a96e7ea523",
       "Content-Type": "application/json",
     },
     data: data,
@@ -667,10 +668,10 @@ app.put("/editTemplate/:id", async (req, res) => {
   console.log(req.body.id);
   var config = {
     method: "put",
-    url: `https://78.128.8.141:3333/api/templates/${req.body.id}`,
+    url: `https://127.0.0.1:3333/api/templates/${req.body.id}`,
     headers: {
       Authorization:
-        "07eaf977985b3095ea41bf32fd41afce3b284c8d091ef36a46fa093e1cf25395",
+        "d05ce705ff99d7fefd1f5a28d094cc5ef0a9b7b528f4f32da43138a96e7ea523",
       "Content-Type": "application/json",
     },
     data: data,
@@ -696,10 +697,10 @@ app.delete("/deleteGroup/:id", async (req, res) => {
 
   var config = {
     method: "delete",
-    url: `https://78.128.8.141:3333/api/groups/${obj.id}`,
+    url: `https://127.0.0.1:3333/api/groups/${obj.id}`,
     headers: {
       Authorization:
-        "07eaf977985b3095ea41bf32fd41afce3b284c8d091ef36a46fa093e1cf25395",
+        "d05ce705ff99d7fefd1f5a28d094cc5ef0a9b7b528f4f32da43138a96e7ea523",
       "Content-Type": "application/json",
     },
   };
@@ -723,10 +724,10 @@ app.delete("/deleteTemplate/:id", async (req, res) => {
 
   var config = {
     method: "delete",
-    url: `https://78.128.8.141:3333/api/templates/${obj.id}`,
+    url: `https://127.0.0.1:3333/api/templates/${obj.id}`,
     headers: {
       Authorization:
-        "07eaf977985b3095ea41bf32fd41afce3b284c8d091ef36a46fa093e1cf25395",
+        "d05ce705ff99d7fefd1f5a28d094cc5ef0a9b7b528f4f32da43138a96e7ea523",
       "Content-Type": "application/json",
     },
   };
@@ -750,10 +751,10 @@ app.delete("/deleteCompaign/:id", async (req, res) => {
 
   var config = {
     method: "delete",
-    url: `https://78.128.8.141:3333/api/campaigns/${obj.id}`,
+    url: `https://127.0.0.1:3333/api/campaigns/${obj.id}`,
     headers: {
       Authorization:
-        "07eaf977985b3095ea41bf32fd41afce3b284c8d091ef36a46fa093e1cf25395",
+        "d05ce705ff99d7fefd1f5a28d094cc5ef0a9b7b528f4f32da43138a96e7ea523",
       "Content-Type": "application/json",
     },
   };
@@ -777,10 +778,10 @@ app.delete("/deletePage/:id", async (req, res) => {
 
   var config = {
     method: "delete",
-    url: `https://78.128.8.141:3333/api/pages/${obj.id}`,
+    url: `https://127.0.0.1:3333/api/pages/${obj.id}`,
     headers: {
       Authorization:
-        "07eaf977985b3095ea41bf32fd41afce3b284c8d091ef36a46fa093e1cf25395",
+        "d05ce705ff99d7fefd1f5a28d094cc5ef0a9b7b528f4f32da43138a96e7ea523",
       "Content-Type": "application/json",
     },
   };
@@ -804,10 +805,10 @@ app.delete("/deleteSendingProfile/:id", async (req, res) => {
 
   var config = {
     method: "delete",
-    url: `https://78.128.8.141:3333/api/smtp/${obj.id}`,
+    url: `https://127.0.0.1:3333/api/smtp/${obj.id}`,
     headers: {
       Authorization:
-        "07eaf977985b3095ea41bf32fd41afce3b284c8d091ef36a46fa093e1cf25395",
+        "d05ce705ff99d7fefd1f5a28d094cc5ef0a9b7b528f4f32da43138a96e7ea523",
       "Content-Type": "application/json",
     },
   };
@@ -831,10 +832,10 @@ app.delete("/deleteUser/:id", async (req, res) => {
 
   var config = {
     method: "delete",
-    url: `https://78.128.8.141:3333/api/users/${obj.id}`,
+    url: `https://127.0.0.1:3333/api/users/${obj.id}`,
     headers: {
       Authorization:
-        "07eaf977985b3095ea41bf32fd41afce3b284c8d091ef36a46fa093e1cf25395",
+        "d05ce705ff99d7fefd1f5a28d094cc5ef0a9b7b528f4f32da43138a96e7ea523",
       "Content-Type": "application/json",
     },
   };
