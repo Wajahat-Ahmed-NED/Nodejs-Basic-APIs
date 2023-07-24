@@ -61,47 +61,54 @@ exports.createUser= (requt,resp)=>{
 var userDetails=requt.body.userdetails
 
 console.log(userDetails)
-sql.connect(config, function(error){
-  if (error){
-console.log(error)
-  }
-  else{
-      var requ = new sql.Request();
-      requ.query(`INSERT INTO [cyberOps].[dbo].[cyberops_signin2] VALUES ('${userDetails.email}','${userDetails.password}','${userDetails.name}','${userDetails.type}','${userDetails.wazuh}','${userDetails.gophish}')`,function(er,result){
-         if (er){
-            console.log(er)
-           res.status(400).send("Something went wrong")
-         }
-         else{
+let data = JSON.stringify({
+  "role": "user",
+  "password": userDetails.password,
+  "username": userDetails.email
+});
+
+let configuration = {
+  method: 'post',
+  maxBodyLength: Infinity,
+  url: 'https://127.0.0.1:3333/api/users/',
+  headers: { 
+    'Authorization': '5ca8b6438bddf6f603ef67882376a04ce8fd168f1100482748c4ce694e90faf4', 
+    'Content-Type': 'application/json'
+  },
+  data : data
+};
+
+axios.request(configuration)
+.then((response) => {
+  console.log((response.data.api_key));
+  const gophish_api_key=response.data.api_key;
+  sql.connect(config, function(error){
+    if (error){
+      resp.status(403).send("Something went wrong")
+    }
+    else{
+        var requ = new sql.Request();
+        requ.query(`INSERT INTO [cyberOps].[dbo].[cyberops_signin2] VALUES ('${userDetails.email}','${userDetails.password}','${userDetails.name}','${userDetails.type}','${userDetails.wazuh}','${userDetails.gophish}','${gophish_api_key}','none')`,function(er,result){
+           if (er){
+             resp.status(401).send("Something went wrong")
+           }
+           else{
+            resp.status(200).send("User created sucessfully")
+          }
+        })
+      }
+    })
+})
+.catch((error) => {
+  console.log("error gophish",error.response.data.message);
+  resp.status(400).send(error.response.data.message)
+});
+
 // console.log("user created Sucessfully")
 // resp.status(200).json({
 //   message: "User Created",
 //   token: "body",
 // });
-
-// need to work on this
-const data ={
-  role:'User',
-  username:userDetails.email,
-  password:userDetails.password
-}
-
-axios.post('http://192.168.2.104:1338/createUser',{
-  data
-})
-.then(res=>{
-console.log("gophish",res)
-})
-.catch(errors=>{
-console.log("gohphish",errors)
-})
-
-
-         }
-      })
-      
-  }
-})
 
 }
 

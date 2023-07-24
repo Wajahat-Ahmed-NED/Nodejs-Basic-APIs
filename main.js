@@ -269,38 +269,38 @@ app.get("/getCompleteCompaign/:id", async (req, res) => {
     });
 });
 
-app.post("/createUser", async (req, res) => {
-  var obj = req.body.data;
-  console.log(obj);
-  var data = JSON.stringify({
-    role: obj.role,
-    password: obj.password,
-    username: obj.username,
-  });
+// app.post("/createUser", async (req, res) => {
+//   var obj = req.body.data;
+//   console.log(obj);
+//   var data = JSON.stringify({
+//     role: obj.role,
+//     password: obj.password,
+//     username: obj.username,
+//   });
 
-  var config = {
-    method: "post",
-    url: "https://127.0.0.1:3333/api/users/",
-    headers: {
-      Authorization:
-        "5ca8b6438bddf6f603ef67882376a04ce8fd168f1100482748c4ce694e90faf4",
-      "Content-Type": "application/json",
-    },
-    data: data,
-  };
+//   var config = {
+//     method: "post",
+//     url: "https://127.0.0.1:3333/api/users/",
+//     headers: {
+//       Authorization:
+//         "5ca8b6438bddf6f603ef67882376a04ce8fd168f1100482748c4ce694e90faf4",
+//       "Content-Type": "application/json",
+//     },
+//     data: data,
+//   };
 
-  await axios(config)
-    .then(function (response) {
-      console.log("Checking", JSON.stringify(response.data));
-      res.status(200).json(response.data);
-    })
-    .catch(function (error) {
-      console.log("ERRor aaya ha", error);
-      console.log({ ...error.response.data });
+//   await axios(config)
+//     .then(function (response) {
+//       console.log("Checking", JSON.stringify(response.data));
+//       res.status(200).json(response.data);
+//     })
+//     .catch(function (error) {
+//       console.log("ERRor aaya ha", error);
+//       console.log({ ...error.response.data });
 
-      res.status(400).json({ ...error.response.data });
-    });
-});
+//       res.status(400).json({ ...error.response.data });
+//     });
+// });
 app.post("/createGroup", async (req, res) => {
   var obj = req.body;
   console.log(obj);
