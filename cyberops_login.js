@@ -119,7 +119,7 @@ exports.getUsers = (request,response)=>{
     }
     else{
       var requ = new sql.Request();
-        requ.query('SELECT username,type,name,wazuh,gophish FROM [cyberOps].[dbo].[cyberops_signin2]',function(er,result){
+        requ.query('SELECT username,type,name,wazuh,gophish,gophishapikey,wazuhapikey FROM [cyberOps].[dbo].[cyberops_signin2]',function(er,result){
            if (er){
               console.log(er)
            }
