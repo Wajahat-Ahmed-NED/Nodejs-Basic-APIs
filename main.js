@@ -18,26 +18,37 @@ app.use(express.urlencoded({ limit: "100mb", extended: false }));
 app.use(express.json({ limit: "100mb" }));
 app.use(cors({ origin: true, credentials: true }));
 var cyberops = require("./cyberops_login");
+const dbConnect = require("./database");
+const { signIn, createUser, getAllUsers, deleteUsers } = require("./controllers/authController");
+const { createGophishKey, getGophishKey, editGophishKey } = require("./controllers/gophishKeyController");
+const gophishKey = require("./models/gophishKey");
 app.use(logger("dev"));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use(bodyParser.json())
 
+dbConnect();
 
+app.use(express.static(path.join(__dirname, "public")));
 
-//app.use(express.static(path.join(__dirname, "public")));
+let STATIC = path.resolve(__dirname, "build");
+let INDEX = path.resolve(STATIC, "index.html");
 
-// let STATIC = path.resolve(__dirname, "build");
-// let INDEX = path.resolve(STATIC, "index.html");
-
-//app.use(express.static(STATIC));
+app.use(express.static(STATIC));
 //controllers
 
 //applicaiotn routes
-app.post("/cyberops_signin", cyberops.cyberops_signIn);
-app.post("/createPortalUser", cyberops.createUser)
-app.get("/getUser",cyberops.getUsers)
+app.post("/cyberops_signin", signIn);
+app.post("/createPortalUser", createUser)
+app.get("/getUser",getAllUsers);
+app.delete("/deleteUsers/:id",deleteUsers);
+
+app.get("/getGophishKey", getGophishKey)
+app.put("/editGophishKey", editGophishKey)
+app.post("/createGophishKey", createGophishKey)
+
+
 
 
 
@@ -73,13 +84,31 @@ app.get("/login", function (req, res, next) {
 app.get("/compaign/:id", function (req, res, next) {
   res.sendFile(INDEX);
 });
+app.get("/user-mgt", function (req, res, next) {
+  res.sendFile(INDEX);
+});
+app.get("/key-mgt", function (req, res, next) {
+  res.sendFile(INDEX);
+});
+let key;
+
+const getKey=async()=>{
+  let data=await gophishKey.find({});
+  key=data[0].key;
+}
+getKey();
+
+
+
 app.get("/getUsers", async (req, res) => {
-  var config = {
+
+  getKey();
+var config = {
     method: "get",
     url: "https://127.0.0.1:3333/api/users/",
     headers: {
       Authorization:
-        "5ca8b6438bddf6f603ef67882376a04ce8fd168f1100482748c4ce694e90faf4",
+        key,
     },
   };
 
@@ -93,12 +122,13 @@ app.get("/getUsers", async (req, res) => {
     });
 });
 app.get("/getGroups", async (req, res) => {
-  var config = {
+  getKey();
+var config = {
     method: "get",
     url: "https://127.0.0.1:3333/api/groups/",
     headers: {
       Authorization:
-        "5ca8b6438bddf6f603ef67882376a04ce8fd168f1100482748c4ce694e90faf4",
+        key,
     },
   };
 
@@ -112,12 +142,13 @@ app.get("/getGroups", async (req, res) => {
     });
 });
 app.get("/getGroupsSummary", async (req, res) => {
-  var config = {
+  getKey();
+var config = {
     method: "get",
     url: "https://127.0.0.1:3333/api/groups/summary",
     headers: {
       Authorization:
-        "5ca8b6438bddf6f603ef67882376a04ce8fd168f1100482748c4ce694e90faf4",
+        key,
     },
   };
 
@@ -131,12 +162,13 @@ app.get("/getGroupsSummary", async (req, res) => {
     });
 });
 app.get("/getTemplates", async (req, res) => {
-  var config = {
+  getKey();
+var config = {
     method: "get",
     url: "https://127.0.0.1:3333/api/templates",
     headers: {
       Authorization:
-        "5ca8b6438bddf6f603ef67882376a04ce8fd168f1100482748c4ce694e90faf4",
+        key,
     },
   };
 
@@ -150,12 +182,13 @@ app.get("/getTemplates", async (req, res) => {
     });
 });
 app.get("/getPages", async (req, res) => {
-  var config = {
+  getKey();
+var config = {
     method: "get",
     url: "https://127.0.0.1:3333/api/pages/",
     headers: {
       Authorization:
-        "5ca8b6438bddf6f603ef67882376a04ce8fd168f1100482748c4ce694e90faf4",
+        key,
     },
   };
 
@@ -169,12 +202,13 @@ app.get("/getPages", async (req, res) => {
     });
 });
 app.get("/getSendingProfile", async (req, res) => {
-  var config = {
+  getKey();
+var config = {
     method: "get",
     url: "https://127.0.0.1:3333/api/smtp/",
     headers: {
       Authorization:
-        "5ca8b6438bddf6f603ef67882376a04ce8fd168f1100482748c4ce694e90faf4",
+        key,
     },
   };
 
@@ -188,12 +222,13 @@ app.get("/getSendingProfile", async (req, res) => {
     });
 });
 app.get("/getCompaigns", async (req, res) => {
-  var config = {
+  getKey();
+var config = {
     method: "get",
     url: "https://127.0.0.1:3333/api/campaigns/",
     headers: {
       Authorization:
-        "5ca8b6438bddf6f603ef67882376a04ce8fd168f1100482748c4ce694e90faf4",
+        key,
     },
   };
 
@@ -208,12 +243,13 @@ app.get("/getCompaigns", async (req, res) => {
 });
 app.get("/getCompaignResult/:id", async (req, res) => {
   let id = req.params.id;
-  var config = {
+  getKey();
+var config = {
     method: "get",
     url: `https://127.0.0.1:3333/api/campaigns/${id}/results`,
     headers: {
       Authorization:
-        "5ca8b6438bddf6f603ef67882376a04ce8fd168f1100482748c4ce694e90faf4",
+        key,
     },
   };
 
@@ -229,12 +265,13 @@ app.get("/getCompaignResult/:id", async (req, res) => {
 app.get("/getCompaignSummary/:id", async (req, res) => {
   let id = req.params.id;
 
-  var config = {
+  getKey();
+var config = {
     method: "get",
     url: `https://127.0.0.1:3333/api/campaigns/${id}/summary`,
     headers: {
       Authorization:
-        "5ca8b6438bddf6f603ef67882376a04ce8fd168f1100482748c4ce694e90faf4",
+        key,
     },
   };
 
@@ -250,12 +287,13 @@ app.get("/getCompaignSummary/:id", async (req, res) => {
 app.get("/getCompleteCompaign/:id", async (req, res) => {
   let id = req.params.id;
   console.log(id);
-  var config = {
+  getKey();
+var config = {
     method: "get",
     url: `https://127.0.0.1:3333/api/campaigns/${id}/complete`,
     headers: {
       Authorization:
-        "5ca8b6438bddf6f603ef67882376a04ce8fd168f1100482748c4ce694e90faf4",
+        key,
     },
   };
 
@@ -269,49 +307,51 @@ app.get("/getCompleteCompaign/:id", async (req, res) => {
     });
 });
 
-// app.post("/createUser", async (req, res) => {
-//   var obj = req.body.data;
-//   console.log(obj);
-//   var data = JSON.stringify({
-//     role: obj.role,
-//     password: obj.password,
-//     username: obj.username,
-//   });
+app.post("/createUser", async (req, res) => {
+  var obj = req.body;
+  console.log(obj);
+  var data = JSON.stringify({
+    role: obj.role,
+    password: obj.password,
+    username: obj.username,
+  });
 
-//   var config = {
-//     method: "post",
-//     url: "https://127.0.0.1:3333/api/users/",
-//     headers: {
-//       Authorization:
-//         "5ca8b6438bddf6f603ef67882376a04ce8fd168f1100482748c4ce694e90faf4",
-//       "Content-Type": "application/json",
-//     },
-//     data: data,
-//   };
+  getKey();
+var config = {
+    method: "post",
+    url: "https://127.0.0.1:3333/api/users/",
+    headers: {
+      Authorization:
+        key,
+      "Content-Type": "application/json",
+    },
+    data: data,
+  };
 
-//   await axios(config)
-//     .then(function (response) {
-//       console.log("Checking", JSON.stringify(response.data));
-//       res.status(200).json(response.data);
-//     })
-//     .catch(function (error) {
-//       console.log("ERRor aaya ha", error);
-//       console.log({ ...error.response.data });
+  await axios(config)
+    .then(function (response) {
+      console.log("Checking", JSON.stringify(response.data));
+      res.status(200).json(response.data);
+    })
+    .catch(function (error) {
+      console.log("ERRor aaya ha", error);
+      console.log({ ...error.response.data });
 
-//       res.status(400).json({ ...error.response.data });
-//     });
-// });
+      res.status(400).json({ ...error.response.data });
+    });
+});
 app.post("/createGroup", async (req, res) => {
   var obj = req.body;
   console.log(obj);
   var data = JSON.stringify({ name: obj.name, targets: obj.targets });
 
-  var config = {
+  getKey();
+var config = {
     method: "post",
     url: "https://127.0.0.1:3333/api/groups/",
     headers: {
       Authorization:
-        "5ca8b6438bddf6f603ef67882376a04ce8fd168f1100482748c4ce694e90faf4",
+        key,
       "Content-Type": "application/json",
     },
     data: data,
@@ -340,12 +380,13 @@ app.post("/createTemplate", async (req, res) => {
     html: obj.html,
   });
 
-  var config = {
+  getKey();
+var config = {
     method: "post",
     url: "https://127.0.0.1:3333/api/templates/",
     headers: {
       Authorization:
-        "5ca8b6438bddf6f603ef67882376a04ce8fd168f1100482748c4ce694e90faf4",
+        key,
       "Content-Type": "application/json",
     },
     data: data,
@@ -374,12 +415,13 @@ app.post("/createPage", async (req, res) => {
     redirect_url: obj.redirect_url,
   });
 
-  var config = {
+  getKey();
+var config = {
     method: "post",
     url: "https://127.0.0.1:3333/api/pages/",
     headers: {
       Authorization:
-        "5ca8b6438bddf6f603ef67882376a04ce8fd168f1100482748c4ce694e90faf4",
+        key,
       "Content-Type": "application/json",
     },
     data: data,
@@ -405,12 +447,13 @@ app.post("/importSite", async (req, res) => {
     url: obj.url,
   });
 
-  var config = {
+  getKey();
+var config = {
     method: "post",
     url: "https://127.0.0.1:3333/api/import/site",
     headers: {
       Authorization:
-        "5ca8b6438bddf6f603ef67882376a04ce8fd168f1100482748c4ce694e90faf4",
+        key,
       "Content-Type": "application/json",
     },
     data: data,
@@ -436,12 +479,13 @@ app.post("/importEmail", async (req, res) => {
     content: obj.content,
   });
 
-  var config = {
+  getKey();
+var config = {
     method: "post",
     url: "https://127.0.0.1:3333/api/import/email",
     headers: {
       Authorization:
-        "5ca8b6438bddf6f603ef67882376a04ce8fd168f1100482748c4ce694e90faf4",
+        key,
       "Content-Type": "application/json",
     },
     data: data,
@@ -464,12 +508,13 @@ app.post("/createCompaign", async (req, res) => {
   console.log(obj);
   var data = JSON.stringify(obj);
 
-  var config = {
+  getKey();
+var config = {
     method: "post",
     url: "https://127.0.0.1:3333/api/campaigns/",
     headers: {
       Authorization:
-        "5ca8b6438bddf6f603ef67882376a04ce8fd168f1100482748c4ce694e90faf4",
+        key,
       "Content-Type": "application/json",
     },
     data: data,
@@ -501,12 +546,13 @@ app.post("/createSendingProfile", async (req, res) => {
     ignore_cert_errors: obj.ignore_cert_errors,
   };
 
-  var config = {
+  getKey();
+var config = {
     method: "post",
-    url: "https://127.0.0.1:3333/api/smtp/?api=5ca8b6438bddf6f603ef67882376a04ce8fd168f1100482748c4ce694e90faf4",
+    url: `https://127.0.0.1:3333/api/smtp/?api=${key}`,
     headers: {
       Authorization:
-        "5ca8b6438bddf6f603ef67882376a04ce8fd168f1100482748c4ce694e90faf4",
+        key,
       "Content-Type": "application/json",
     },
 
@@ -534,12 +580,13 @@ app.put("/editSendingProfile/:id", async (req, res) => {
     ...req.body,
   });
   console.log(req.body.id);
-  var config = {
+  getKey();
+var config = {
     method: "put",
     url: `https://127.0.0.1:3333/api/smtp/${req.body.id}`,
     headers: {
       Authorization:
-        "5ca8b6438bddf6f603ef67882376a04ce8fd168f1100482748c4ce694e90faf4",
+        key,
       "Content-Type": "application/json",
     },
     data: data,
@@ -566,12 +613,13 @@ app.put("/editUser/:id", async (req, res) => {
     ...req.body,
   });
   console.log(req.body.id);
-  var config = {
+  getKey();
+var config = {
     method: "put",
     url: `https://127.0.0.1:3333/api/users/${req.body.id}`,
     headers: {
       Authorization:
-        "5ca8b6438bddf6f603ef67882376a04ce8fd168f1100482748c4ce694e90faf4",
+        key,
       "Content-Type": "application/json",
     },
     data: data,
@@ -600,12 +648,13 @@ app.put("/editPage/:id", async (req, res) => {
     ...req.body,
   });
   console.log(req.body.id);
-  var config = {
+  getKey();
+var config = {
     method: "put",
     url: `https://127.0.0.1:3333/api/pages/${req.body.id}`,
     headers: {
       Authorization:
-        "5ca8b6438bddf6f603ef67882376a04ce8fd168f1100482748c4ce694e90faf4",
+        key,
       "Content-Type": "application/json",
     },
     data: data,
@@ -634,12 +683,13 @@ app.put("/editGroup/:id", async (req, res) => {
     targets: obj.targets,
   });
   console.log(req.body.id);
-  var config = {
+  getKey();
+var config = {
     method: "put",
     url: `https://127.0.0.1:3333/api/groups/${req.body.id}`,
     headers: {
       Authorization:
-        "5ca8b6438bddf6f603ef67882376a04ce8fd168f1100482748c4ce694e90faf4",
+        key,
       "Content-Type": "application/json",
     },
     data: data,
@@ -672,12 +722,13 @@ app.put("/editTemplate/:id", async (req, res) => {
     ...req.body,
   });
   console.log(req.body.id);
-  var config = {
+  getKey();
+var config = {
     method: "put",
     url: `https://127.0.0.1:3333/api/templates/${req.body.id}`,
     headers: {
       Authorization:
-        "5ca8b6438bddf6f603ef67882376a04ce8fd168f1100482748c4ce694e90faf4",
+        key,
       "Content-Type": "application/json",
     },
     data: data,
@@ -701,12 +752,13 @@ app.delete("/deleteGroup/:id", async (req, res) => {
   console.log(req.params.id);
   console.log(obj);
 
-  var config = {
+  getKey();
+var config = {
     method: "delete",
     url: `https://127.0.0.1:3333/api/groups/${obj.id}`,
     headers: {
       Authorization:
-        "5ca8b6438bddf6f603ef67882376a04ce8fd168f1100482748c4ce694e90faf4",
+        key,
       "Content-Type": "application/json",
     },
   };
@@ -728,12 +780,13 @@ app.delete("/deleteTemplate/:id", async (req, res) => {
   console.log(req.params.id);
   console.log(obj);
 
-  var config = {
+  getKey();
+var config = {
     method: "delete",
     url: `https://127.0.0.1:3333/api/templates/${obj.id}`,
     headers: {
       Authorization:
-        "5ca8b6438bddf6f603ef67882376a04ce8fd168f1100482748c4ce694e90faf4",
+        key,
       "Content-Type": "application/json",
     },
   };
@@ -755,12 +808,13 @@ app.delete("/deleteCompaign/:id", async (req, res) => {
   console.log(req.params.id);
   console.log(obj);
 
-  var config = {
+  getKey();
+var config = {
     method: "delete",
     url: `https://127.0.0.1:3333/api/campaigns/${obj.id}`,
     headers: {
       Authorization:
-        "5ca8b6438bddf6f603ef67882376a04ce8fd168f1100482748c4ce694e90faf4",
+        key,
       "Content-Type": "application/json",
     },
   };
@@ -782,12 +836,13 @@ app.delete("/deletePage/:id", async (req, res) => {
   console.log(req.params.id);
   console.log(obj);
 
-  var config = {
+  getKey();
+var config = {
     method: "delete",
     url: `https://127.0.0.1:3333/api/pages/${obj.id}`,
     headers: {
       Authorization:
-        "5ca8b6438bddf6f603ef67882376a04ce8fd168f1100482748c4ce694e90faf4",
+        key,
       "Content-Type": "application/json",
     },
   };
@@ -809,12 +864,13 @@ app.delete("/deleteSendingProfile/:id", async (req, res) => {
   console.log(req.params.id);
   console.log(obj);
 
-  var config = {
+  getKey();
+var config = {
     method: "delete",
     url: `https://127.0.0.1:3333/api/smtp/${obj.id}`,
     headers: {
       Authorization:
-        "5ca8b6438bddf6f603ef67882376a04ce8fd168f1100482748c4ce694e90faf4",
+        key,
       "Content-Type": "application/json",
     },
   };
@@ -836,12 +892,13 @@ app.delete("/deleteUser/:id", async (req, res) => {
   console.log(req.params.id);
   console.log(obj);
 
-  var config = {
+  getKey();
+var config = {
     method: "delete",
     url: `https://127.0.0.1:3333/api/users/${obj.id}`,
     headers: {
       Authorization:
-        "5ca8b6438bddf6f603ef67882376a04ce8fd168f1100482748c4ce694e90faf4",
+        key,
       "Content-Type": "application/json",
     },
   };
