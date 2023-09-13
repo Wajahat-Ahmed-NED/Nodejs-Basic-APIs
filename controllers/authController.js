@@ -34,8 +34,7 @@ exports.signIn = async (req, res) => {
       message: "Login Successful",
       username: user.username,
       name: user.name,
-      type: "SuperUser",
-      token: "body",
+      age: user.age,
     };
     return res.status(200).json(response);
   } catch (error) {
@@ -49,7 +48,7 @@ exports.signIn = async (req, res) => {
 
 exports.createUser = async (req, res) => {
   try {
-    const { username, password, name } = req.body;
+    const { username, password, name, age } = req.body;
 
     try {
       // const emailInUse = await User.exists({ email });
@@ -61,6 +60,14 @@ exports.createUser = async (req, res) => {
         const error = {
           status: 409,
           message: "Username already registered, use another username!",
+        };
+
+        return res.status(409).json(error);
+      }
+      if (age < 18) {
+        const error = {
+          status: 409,
+          message: "Only 18+ People Can Register!",
         };
 
         return res.status(409).json(error);
@@ -81,6 +88,7 @@ exports.createUser = async (req, res) => {
         username,
         name,
         password: hashedPassword,
+        age,
       });
 
       user = await userToRegister.save();
@@ -98,6 +106,102 @@ exports.createUser = async (req, res) => {
       message: "Something went wrong",
     };
     return res.status(401).json(response);
+  }
+};
+
+exports.changePassword = async (req, res) => {
+  try {
+    const { username, password, newPassword, confirmPassword } = req.body;
+
+    try {
+      // const emailInUse = await User.exists({ email });
+      if (!username || !password || !newPassword || !confirmPassword) {
+        return res.status(401).json({ message: "Fill all the details" });
+      }
+      if (confirmPassword !== newPassword) {
+        return res.status(401).json({ message: "Password does not match" });
+      } else if (password == newPassword) {
+        return res.status(401).json({
+          message: "Password must be different from previous password",
+        });
+      }
+      const user = await Auth.findOne({ username: username });
+      if (user.password !== password) {
+        return res.status(401).json({ message: "Invalid Current Password" });
+      }
+      await Auth.updateOne(
+        { username: username },
+        {
+          password: newPassword,
+        }
+      );
+      return res.status(200).json({ message: "Password updated successfully" });
+    } catch (error) {
+      // return next(error);
+      console.log(error);
+      const response = {
+        message: "Something went wrong",
+      };
+      return res.status(409).json(response);
+    }
+  } catch (error) {
+    const response = {
+      message: "Something went wrong",
+    };
+    return res.status(401).json(response);
+  }
+};
+
+exports.updateProfile = async (req, res) => {
+  try {
+    const { username, name, age } = req.body;
+
+    try {
+      // const emailInUse = await User.exists({ email });
+      if (!username || !name || !age) {
+        return res.status(401).json({ message: "Fill all the details" });
+      }
+      if (age < 18) {
+        return res.status(401).json({ message: "Only 18+ can register" });
+      }
+
+      await Auth.updateOne(
+        { username: username },
+        {
+          name: name,
+          age: age,
+        }
+      );
+      return res.status(200).json({ message: "Profile updated successfully" });
+    } catch (error) {
+      // return next(error);
+      console.log(error);
+      const response = {
+        message: "Something went wrong",
+      };
+      return res.status(409).json(response);
+    }
+  } catch (error) {
+    const response = {
+      message: "Something went wrong",
+    };
+    return res.status(401).json(response);
+  }
+};
+
+exports.getUserById = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const data = await Auth.find({ _id: id });
+    const response = {
+      message: "Success",
+      users: data,
+    };
+    res.status(200).json(response);
+  } catch (error) {
+    console.log(error);
+    const response = { message: error.message };
+    res.status(500).json(response);
   }
 };
 
