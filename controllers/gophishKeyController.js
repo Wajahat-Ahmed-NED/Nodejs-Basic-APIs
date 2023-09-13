@@ -21,11 +21,12 @@ exports.createGophishKey = async (req, res) => {
 
 
         try {
-            const { key } = req.body;
+            const { key,ip } = req.body;
 
 
             const userToRegister = new gophishKey({
-                key
+                key,
+                ip
             });
 
             const user = await userToRegister.save();
@@ -45,12 +46,14 @@ exports.editGophishKey = async (req, res) => {
 
 
         try {
-            const { key } = req.body;
-
+            const { key ,ip} = req.body;
+            console.log(key,ip)
             await gophishKey.updateOne(
-                { _id: '64eeef79125fb00bce6b57f0' },
+                { _id: "64f641b3215b9b76212f2bf8" },
                 {
                   key,
+                  ip
+                  
                 }
               );
 

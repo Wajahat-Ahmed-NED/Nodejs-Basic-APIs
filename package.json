@@ -1,4 +1,9 @@
 {
+  "name": "mernapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "bin": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon main.js"
@@ -16,6 +21,15 @@
     "mssql": "^9.0.1",
     "nodemon": "^2.0.22",
     "path": "^0.12.7",
+    "pkg": "^5.8.1",
     "request-promise": "^4.2.6"
+  },
+  "pkg": {
+    "assets": [
+      "./node_modules/**/*",
+      "./build/**/*",
+      "./views/**/*",
+      "./assets/**/*"
+    ]
   }
 }
