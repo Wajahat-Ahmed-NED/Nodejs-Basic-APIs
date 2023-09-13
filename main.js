@@ -54,6 +54,7 @@ app.put("/changePassword", changePassword);
 app.put("/updateProfile", updateProfile);
 app.get("/getUserById/:id", getUserById);
 
+//log apis
 app.get("/getActivityLogs/:id", getActivityLogs);
 app.post("/createActivityLogs", createActivityLogs);
 
